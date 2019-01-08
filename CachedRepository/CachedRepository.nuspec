@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<package>
+<?xml version="1.0"?>
+<package >
   <metadata>
     <id>CachedRepository</id>
-    <version>1.0.0</version>
-    <title>CachedRepository</title>
+    <version>1.0.1</version>
+    <title>$title$</title>
     <authors>Oğuzhan Kahyaoğlu</authors>
     <owners>Oğuzhan Kahyaoğlu</owners>
     <licenseUrl>https://github.com/oguzhankahyaoglu/CachedRepository</licenseUrl>
@@ -12,15 +12,15 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A thread-safe caching infrastructure for caching data objects, which should be requested only once when needed from the data source (db, service or any type of data source)</description>
     <releaseNotes>Initial 1.0.0 release</releaseNotes>
-    <copyright>Copyright 2019 Oğuzhan Kahyaoğlu</copyright>
+    <copyright>Copyright 2019</copyright>
     <tags>c# aspnet caching threadsafe cachedrepository repository</tags>
     <dependencies>
       <dependency id="LazyCache" version="0.7.1.44" />
     </dependencies>
     <summary>A thread-safe caching infrastructure for caching data objects, which should be requested only once when needed from the data source (db, service or any type of data source)</summary>
   </metadata>
-  	<files>
-        <file src="lib\**" target="build" />
-    </files>
-
+<files>
+	<file src="bin\CachedRepository.dll" target="lib\net45" />
+	<file src="bin\CachedRepository.xml" target="lib\net45" />
+</files>
 </package>

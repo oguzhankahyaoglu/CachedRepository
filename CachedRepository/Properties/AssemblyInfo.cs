@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CachedRepository")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A thread-safe caching infrastructure for caching data objects, which should be requested only once when needed from the data source (db, service or any type of data source)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CachedRepository.Properties")]
+[assembly: AssemblyProduct("CachedRepository")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

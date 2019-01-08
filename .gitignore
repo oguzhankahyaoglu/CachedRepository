@@ -13,16 +13,11 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
 x64/
 x86/
 bld/
-[Bb]in/
-[Oo]bj/
 [Ll]og/
+[Oo]bj/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -178,7 +173,6 @@ publish/
 PublishScripts/
 
 # NuGet Packages
-*.nupkg
 # The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
