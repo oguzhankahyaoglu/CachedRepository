@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CachedRepository</name>
+    </assembly>
+    <members>
+        <member name="T:CachedRepository.CachedDictionary`5">
+            <inheritdoc cref="T:CachedRepository.CachedDictionary`2"/>
+        </member>
+        <member name="T:CachedRepository.CachedDictionary`4">
+            <inheritdoc cref="T:CachedRepository.CachedDictionary`2"/>
+        </member>
+        <member name="T:CachedRepository.CachedDictionary`3">
+            <inheritdoc cref="T:CachedRepository.CachedDictionary`2"/>
+        </member>
+        <member name="T:CachedRepository.CachedDictionary`1">
+            <inheritdoc cref="T:CachedRepository.CachedDictionary`2"/>
+        </member>
+        <member name="T:CachedRepository.CachedDictionary`2">
+            <summary>
+            Runtime Cache'de kaydedilmek üzere, cached dictionary yazmak için kullanılabilr.
+            Key'ler üzerinden ilgil entity'leri döner.
+            </summary>
+            <typeparam name="TEntity">Repository'nin içerdiği entity tipi</typeparam>
+            <typeparam name="TKey">Bu entity'lerin Get edilirken key olarak kullanılcak alanların tipi. string yada int gibi bir tip olabilir.</typeparam>
+        </member>
+        <member name="M:CachedRepository.CachedDictionary`2.TryGetEntityFromCache(`1,`0@)">
+            <summary>
+            Cache'den ilgili kaydı bulabilmesinin mantığı ezilebilsin diye protected yapıldı.
+            </summary>
+            <param name="keyForFinding"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CachedRepository.CachedDictionary`2.ShouldExpireEntityItem(`1,`0)">
+            <summary>
+            Cache'deki item'ın varlığını kontrol etmek ve bu mekanizmayı ezmek için metod virtual hale getirildi. 
+            Belirli durumlarda, belirli item'ların expire olması gerekiyorsa bu metod ezilmeli.
+            </summary>
+        </member>
+        <member name="M:CachedRepository.CachedDictionary`2.IsKeyCached(`1)">
+            <summary>
+            tuple gibi birden fazla key verildiğinde, containskey metodu doğru çalışmyıor aynı tuple oluşturmamıza rağmen. ondan ötürü ezilmesi gerekiyor
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CachedRepository.CachedObject`1">
+            <summary>
+            Runtime Cache'de kaydedilmek üzere, cached repo yazmak için kullanılabilr.
+            Key'ler üzerinden ilgil entity'leri döner.
+            CachedRepo'dan farklı olarak, bir koleksiyon değil, direkt olarak bir obje'yi cache'de tutar/yönetir
+            </summary>
+            <typeparam name="T">Repository'nin içerdiği entity tipi</typeparam>
+        </member>
+        <member name="T:CachedRepository.CachedRepo`1">
+            <summary>
+            Runtime Cache'de kaydedilmek üzere, cached repo yazmak için kullanılabilr.
+            Key'ler üzerinden ilgil entity'leri döner.
+            </summary>
+            <typeparam name="T">Repository'nin içerdiği entity tipi</typeparam>
+        </member>
+        <member name="M:CachedRepository.CachedRepo`1.GetCachedEntities(System.Boolean)">
+            <summary>
+            Cache'deki btün entityleri verir
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CachedRepository.CachedRepo`1.SetCachedEntities(System.Collections.Generic.List{`0})">
+            <summary>
+            Cache'deki değerleri verilen parametre ile değiştirir
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:CachedRepository.CachedRepo`1.ReleaseCache">
+            <summary>
+            Repo'nun bütün cache'ini boşaltır, bütün objeler silinir.
+            </summary>
+        </member>
+        <member name="F:CachedRepository.CachedRepoBase.DefaultExpireDate1Day">
+            <summary>
+            aynı günün 23:59:00 da expire olması
+            </summary>
+        </member>
+        <member name="M:CachedRepository.CachedRepoBase.ReleaseAllCaches">
+            <summary>
+            Sadece Memorycache'i boşaltır, Runtimecache'i elle temizlemek gerekiyor.
+            </summary>
+        </member>
+        <member name="F:CachedRepository.CachedRepoBase.CacheItemRemovedCallback">
+            <summary>
+            AbsoluteExpiration ile cache'e eklemek için.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:CachedRepository.CachedRepoBase`1.SetCache(System.String,`0)">
+            <summary>
+            Runtime Cache'e yazmakla görevlidir. Default davranışı 15 gün cache'de kalacak ve NotRemovable olacak şekilde cache'lemektir.
+            Davranışını değiştirmek için extend edilmelidir.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:CachedRepository.Extensions.RoundUp(System.DateTime,System.TimeSpan)">
+            <summary>
+            Verilen tarihi, verilen timespan ile verilen en yakın tarihe yuvarlar, örneğin  her 10 dk'da bir gibi.
+            var roundedUp = date.RoundUp(TimeSpan.FromMinutes(15)); // 2010/02/05 10:45:00
+            </summary>
+        </member>
+        <member name="M:CachedRepository.Extensions.DefaultIfNull``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            gereksiz nullcheck'ten kurtarmak için. defaultValue parametresi verilirse, o zaman null yada 0 elemanlı olması durumunda bu değer dönecektir
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="coll"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CachedRepository.Extensions.DefaultIfNullToList``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            gereksiz nullcheck'ten kurtarmak için. defaultValue parametresi verilirse, o zaman null yada 0 elemanlı olması durumunda bu değer dönecektir
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="coll"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CachedRepository.Extensions.DefaultIfNullToArray``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            gereksiz nullcheck'ten kurtarmak için. defaultValue parametresi verilirse, o zaman null yada 0 elemanlı olması durumunda bu değer dönecektir
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="coll"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
