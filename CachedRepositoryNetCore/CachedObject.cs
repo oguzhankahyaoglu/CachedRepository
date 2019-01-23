@@ -1,4 +1,5 @@
 ﻿using System;
+using LazyCache;
 
 namespace CachedRepository
 {
@@ -11,16 +12,21 @@ namespace CachedRepository
     public abstract class CachedObject<T> : CachedRepoBase<T>
         where T : class, new()
     {
+        protected CachedObject(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
 
         private T _GetCachedEntitiesFromCache() => GetFromCache(GetCacheKey());
         private void _SetCachedEntitiesToCache(T value) => SetCache(GetCacheKey(), value);
 
         public virtual T GetCachedEntities()
         {
-            var result = _LazyCache.GetOrAdd(GetCacheKey(), () =>
+            var result = _LazyCache.GetOrAdd(GetCacheKey(), (entry) =>
             {
                 try
                 {
+                    entry.Priority = DefaultCacheItemPriority;
                     var cached = GetDataToBeCached();
                     LastCachedItemDate = DateTime.Now;
                     return cached;
@@ -29,7 +35,7 @@ namespace CachedRepository
                 {
                     throw new Exception($"{GetType().Name} repo'sundan data çekilirken hata oluştu", e);
                 }
-            }, CacheItemPolicyDefault);
+            });
             return result;
         }
 

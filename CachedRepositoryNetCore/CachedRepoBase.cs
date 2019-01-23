@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Caching;
 using System.Threading;
 using LazyCache;
-using CacheItemPriority = System.Web.Caching.CacheItemPriority;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CachedRepository
 {
@@ -27,39 +25,49 @@ namespace CachedRepository
 
         public static Func<int, DateTime> DefaultExpireDateXHours = (hours) => DateTime.Now.AddHours(hours).RoundUp(TimeSpan.FromHours(1));
 
-        /// <summary>
-        /// Sadece Memorycache'i boşaltır, Runtimecache'i elle temizlemek gerekiyor.
-        /// </summary>
-        public static void ReleaseAllCaches()
+        ///// <summary>
+        ///// Sadece Memorycache'i boşaltır, Runtimecache'i elle temizlemek gerekiyor.
+        ///// </summary>
+        //public static void ReleaseAllCaches()
+        //{
+        //    locker.Wait();
+        //    try
+        //    {
+        //        //HttpContext.Current.Cache.ClearAll();
+        //        var cacheKeys = _LazyCache.CacheProvider..ObjectCache.Select(kvp => kvp.Key).ToList();
+        //        foreach (string cacheKey in cacheKeys)
+        //            _LazyCache.ObjectCache.Remove(cacheKey);
+        //    }
+        //    finally
+        //    {
+        //        locker.Release();
+        //    }
+        //}
+
+        protected CachedRepoBase(CachingService lazyCache)
         {
-            locker.Wait();
-            try
-            {
-                //HttpContext.Current.Cache.ClearAll();
-                var cacheKeys = _LazyCache.ObjectCache.Select(kvp => kvp.Key).ToList();
-                foreach (string cacheKey in cacheKeys)
-                    _LazyCache.ObjectCache.Remove(cacheKey);
-            }
-            finally
-            {
-                locker.Release();
-            }
+            _LazyCache = lazyCache;
         }
 
         protected static readonly SemaphoreSlim locker = new SemaphoreSlim(1, 1);
-        protected static CachingService _LazyCache = new CachingService();
-        protected static ObjectCache _ObjectCache => _LazyCache.ObjectCache;
-         /// <summary>
-        /// AbsoluteExpiration ile cache'e eklemek için.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        protected CacheEntryRemovedCallback CacheItemRemovedCallback = arguments => 
-            Debug.WriteLine($"[CachedDataSourceBase] Cache ({arguments.Source}: +{arguments.CacheItem}) Removed: {arguments.RemovedReason}");
-        protected CacheItemPolicy CacheItemPolicyDefault => new CacheItemPolicy
+        protected CachingService _LazyCache;
+
+        protected CacheItemPriority DefaultCacheItemPriority = CacheItemPriority.Normal;
+
+        protected MemoryCacheEntryOptions CacheItemPolicyDefault => new MemoryCacheEntryOptions
         {
             AbsoluteExpiration = GetCacheExpireDate(),
             //Priority = (System.Runtime.Caching.CacheItemPriority) CacheItemPriority.AboveNormal,
-            RemovedCallback = CacheItemRemovedCallback
+            Priority = DefaultCacheItemPriority,
+            PostEvictionCallbacks = {
+                new PostEvictionCallbackRegistration
+                {
+                    EvictionCallback = delegate(object key, object value, EvictionReason reason, object state)
+                    {
+                        Debug.WriteLine($"[CachedDataSourceBase] Cache ({key}: +{value}) Removed: {reason} State: {state}");
+                    }
+                }
+            }
         };
 
         protected virtual DateTime GetCacheExpireDate()
@@ -104,7 +112,7 @@ namespace CachedRepository
     public abstract class CachedRepoBase<T> : CachedRepoBase
         where T : class
     {
-        protected CachedRepoBase()
+        protected CachedRepoBase(CachingService lazyCache) : base(lazyCache)
         {
 
         }
@@ -114,7 +122,6 @@ namespace CachedRepository
             return "CachedRepoBase-" + GetType().FullName;
         }
 
-        protected CacheItemPriority DefaultCacheItemPriority = CacheItemPriority.Default;
         protected T GetFromCache(String key)
         {
             var cachedItem = _LazyCache.Get<T>(key);

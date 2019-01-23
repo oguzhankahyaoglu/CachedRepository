@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using LazyCache;
 
 namespace CachedRepository
 {
@@ -15,6 +16,10 @@ namespace CachedRepository
         where T : class
         //where TGetResult : class
     {
+        protected CachedRepo(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
 
 
         #region Get Cached Entities (private)

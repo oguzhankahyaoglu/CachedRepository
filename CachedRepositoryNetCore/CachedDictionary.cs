@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LazyCache;
 
 namespace CachedRepository
 {
@@ -11,6 +12,10 @@ namespace CachedRepository
     public abstract class CachedDictionary<TEntity, TKey1, TKey2, TKey3, TKey4> : CachedDictionary<TEntity, Tuple<TKey1, TKey2, TKey3, TKey4>>
     //where TEntity : class
     {
+        protected CachedDictionary(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
 
         internal override bool IsKeyCached(Tuple<TKey1, TKey2, TKey3, TKey4> key)
         {
@@ -23,6 +28,10 @@ namespace CachedRepository
     public abstract class CachedDictionary<TEntity, TKey1, TKey2, TKey3> : CachedDictionary<TEntity, Tuple<TKey1, TKey2, TKey3>>
     //where TEntity : class
     {
+        protected CachedDictionary(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
 
         internal override bool IsKeyCached(Tuple<TKey1, TKey2, TKey3> key)
         {
@@ -35,6 +44,10 @@ namespace CachedRepository
     public abstract class CachedDictionary<TEntity, TKey1, TKey2> : CachedDictionary<TEntity, Tuple<TKey1, TKey2>>
     //where TEntity : class
     {
+        protected CachedDictionary(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
 
         internal override bool IsKeyCached(Tuple<TKey1, TKey2> key)
         {
@@ -47,6 +60,10 @@ namespace CachedRepository
     public abstract class CachedDictionary<TEntity> : CachedDictionary<TEntity, int>
     //where TEntity : class
     {
+        protected CachedDictionary(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
 
     }
 
@@ -62,6 +79,11 @@ namespace CachedRepository
     //where TEntity : class
     //where TGetResult : class
     {
+        protected CachedDictionary(CachingService lazyCache) : base(lazyCache)
+        {
+
+        }
+
 
 
         #region Get Cached Entities (private)
