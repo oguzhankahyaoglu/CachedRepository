@@ -12,7 +12,6 @@ namespace CachedRepository
     /// <typeparam name="T">Repository'nin içerdiği entity tipi</typeparam>
     //public abstract class CachedRepo<T, TKey, TGetResult> : CachedRepoBase<List<T>>
     public abstract class CachedRepo<T> : CachedRepoBase<List<T>>
-        where T : class
         //where TGetResult : class
     {
 
@@ -46,7 +45,7 @@ namespace CachedRepository
             if (CachedEntities.AnyAndNotNull())
                 return CachedEntities;
 
-            IEnumerable<T> returnedData = null;
+            IEnumerable<T> returnedData;
             try
             {
                 returnedData = GetDataToBeCached();

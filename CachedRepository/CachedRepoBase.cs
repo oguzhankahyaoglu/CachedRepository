@@ -49,11 +49,11 @@ namespace CachedRepository
         protected static readonly SemaphoreSlim locker = new SemaphoreSlim(1, 1);
         protected static CachingService _LazyCache = new CachingService();
         protected static ObjectCache _ObjectCache => _LazyCache.ObjectCache;
-         /// <summary>
+        /// <summary>
         /// AbsoluteExpiration ile cache'e eklemek için.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        protected CacheEntryRemovedCallback CacheItemRemovedCallback = arguments => 
+        protected CacheEntryRemovedCallback CacheItemRemovedCallback = arguments =>
             Debug.WriteLine($"[CachedDataSourceBase] Cache ({arguments.Source}: +{arguments.CacheItem}) Removed: {arguments.RemovedReason}");
         protected CacheItemPolicy CacheItemPolicyDefault => new CacheItemPolicy
         {
@@ -102,7 +102,6 @@ namespace CachedRepository
     }
 
     public abstract class CachedRepoBase<T> : CachedRepoBase
-        where T : class
     {
         protected CachedRepoBase()
         {
@@ -141,7 +140,7 @@ namespace CachedRepository
         /// <param name="value"></param>
         protected void SetCache(String key, T value)
         {
-            if (value == null)
+            if (value.Equals(default(T)))
                 _LazyCache.Remove(key);
             else
             {

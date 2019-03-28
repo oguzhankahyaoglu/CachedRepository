@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>CachedRepository</id>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <title>$title$</title>
     <authors>Oğuzhan Kahyaoğlu</authors>
     <owners>Oğuzhan Kahyaoğlu</owners>
@@ -11,7 +11,7 @@
     <iconUrl>https://github.com/oguzhankahyaoglu/CachedRepository</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A thread-safe caching infrastructure for caching data objects, which should be requested only once when needed from the data source (db, service or any type of data source)</description>
-    <releaseNotes>Initial 1.0.0 release</releaseNotes>
+    <releaseNotes>1.1 release: removing class/new reference from repository types (T)</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>c# aspnet caching threadsafe cachedrepository repository</tags>
     <dependencies>

@@ -62,7 +62,10 @@ namespace CachedRepository
     //where TEntity : class
     //where TGetResult : class
     {
-
+        /// <summary>
+        /// If you set this flag to false, I will stop retrying to retrieve value since I will cache the default value that you have provided in abstract method.
+        /// </summary>
+        public bool ShouldTryAgainForDefaultValuesFromDataSource = true;
 
         #region Get Cached Entities (private)
 
@@ -106,10 +109,9 @@ namespace CachedRepository
         private TEntity _Get(TKey keyForFinding, bool useCache)
         {
             if (CachedEntities == null)
-                throw new Exception($"{GetType()} CachedEntities is null!");
+                throw new Exception($"{GetType()} CachedEntities is null which cannot be null. Probably memory cache provider is invalid!");
 
-            var result = default(TEntity);
-            if (useCache && TryGetEntityFromCache(keyForFinding, out result))
+            if (useCache && TryGetEntityFromCache(keyForFinding, out var result))
                 return result;
 
             //DebugLog($"Requesting data to be cached for key {keyForFinding}");
@@ -129,7 +131,7 @@ namespace CachedRepository
              *Şimdi şöyle birşey var, data null döndüyse yada hata aldıysa cache'e yazmamalı okey
              * Fakat boş array/list vb döndüyse de cache'lenmeli, dönmeseymiş kardeşim yannıt dönebiliyor demek ki...                 *
              */
-            if (result == null)
+            if (result.Equals(default(TEntity)))
             {
                 return CreateDefaultResult(keyForFinding);
             }
@@ -182,6 +184,9 @@ namespace CachedRepository
         {
             if (CachedEntities.TryGetValue(keyForFinding, out result))
             {
+                if (ShouldTryAgainForDefaultValuesFromDataSource && result.Equals(default(TEntity)))
+                    return false;
+
                 if (!ShouldExpireEntityItem(keyForFinding, result))
                     return true;
                 return false;

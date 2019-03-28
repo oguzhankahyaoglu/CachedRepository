@@ -9,7 +9,6 @@ namespace CachedRepository
     /// </summary>
     /// <typeparam name="T">Repository'nin içerdiği entity tipi</typeparam>
     public abstract class CachedObject<T> : CachedRepoBase<T>
-        where T : class, new()
     {
 
         private T _GetCachedEntitiesFromCache() => GetFromCache(GetCacheKey());
@@ -40,7 +39,7 @@ namespace CachedRepository
 
         public override void ReleaseCache()
         {
-            _SetCachedEntitiesToCache(null);
+            _SetCachedEntitiesToCache(default(T));
         }
 
         protected abstract T GetDataToBeCached();

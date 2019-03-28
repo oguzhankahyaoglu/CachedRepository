@@ -24,6 +24,11 @@
             <typeparam name="TEntity">Repository'nin içerdiği entity tipi</typeparam>
             <typeparam name="TKey">Bu entity'lerin Get edilirken key olarak kullanılcak alanların tipi. string yada int gibi bir tip olabilir.</typeparam>
         </member>
+        <member name="F:CachedRepository.CachedDictionary`2.ShouldTryAgainForDefaultValuesFromDataSource">
+            <summary>
+            If you set this flag to false, I will stop retrying to retrieve value since I will cache the default value that you have provided in abstract method.
+            </summary>
+        </member>
         <member name="M:CachedRepository.CachedDictionary`2.TryGetEntityFromCache(`1,`0@)">
             <summary>
             Cache'den ilgili kaydı bulabilmesinin mantığı ezilebilsin diye protected yapıldı.
